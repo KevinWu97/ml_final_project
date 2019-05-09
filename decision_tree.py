@@ -110,6 +110,9 @@ def construct_tree(data_set, already_split_variables):
 
     if data_set.empty:
         return already_split_variables
+    elif len(data_set.index) < 200:
+        # This to prevent data sets in our decision tree from being too small
+        return already_split_variables
     elif all_same(y_values_mod):
         return already_split_variables
     elif len(data_set.columns) == 1 and data_set.columns[0] == 'politicalid':
