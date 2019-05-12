@@ -55,7 +55,16 @@ class Network:
             decision_tree.traverse_and_split(dtree_var, training_data, batches)
 
             # filter batches to get only columns with the relevant neural network variables (77)
+            # before calling the update step method
             for batch in batches:
+                batch = batch[['age','gender','anchoranswer1','anchoranswer2','anchoranswer3','anchoranswer4','reciprocityus','reciprocityother','allowedforbidden','quote','totalflagtimeestimations','totalnoflagtimeestimations','iatexpert',
+                              'iatexpmath','iatexpall','totalexpmissed','artwarm','diseaseframinga','diseaseframingb','flagdv1','flagdv2','flagdv3','flagdv4','flagdv5','flagdv6','flagdv7',
+                              'flagdv8','flagsupplement1','flagsupplement2','flagsupplement3','flagtimeestimate1','flagtimeestimate2','flagtimeestimate3','flagtimeestimate4', 'gamblerfallacya',
+                              'gamblerfallacyb','iatexplicitart1','iatexplicitart2','iatexplicitart3','iatexplicitart4','iatexplicitart5','iatexplicitart6','iatexplicitmath1','iatexplicitmath2',
+                              'iatexplicitmath3','iatexplicitmath4','iatexplicitmath5','iatexplicitmath6','imaginedexplicit1','imaginedexplicit2','imaginedexplicit3','imaginedexplicit4','major','mathwarm','moneyagea',
+                              'moneyageb','moneygendera','moneygenderb','noflagtimeestimate1','noflagtimeestimate2','noflagtimeestimate3','noflagtimeestimate4','omdimc3','quotea','quoteb',
+                              'scalesa','scalesb','sunkcosta','sunkcostb','sysjust1','sysjust2','sysjust3','sysjust4','sysjust5','sysjust6','sysjust7','sysjust8']].copy()
+                batch = batch.values.tolist()
                 self.update_mini_batch(batch, learning_rate)
             '''
             if test_data:
