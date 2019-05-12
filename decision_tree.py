@@ -152,7 +152,35 @@ def construct_tree(data_set, already_split_variables):
     return current_node
 
 
+def traverse_and_split(decision_tree_node, participant_data, batches):
+    print(type(decision_tree_node))
+    if type(decision_tree_node) == list:
+        print('got to end')
+        batches.append(participant_data)
+        return
+    elif type(decision_tree_node) == AttributeNode:
+        print('got to attribute')
+        attribute_name = decision_tree_node.attribute_name
+        attribute_values = decision_tree_node.attribute_values
+        for value_node in attribute_values:
+            # print(type(value_node))
+            # print(value_node.value)
+            # print(participant_data[attribute_name].tolist())
+            new_participant_data = participant_data.loc[participant_data[attribute_name] == value_node.value]
+            traverse_and_split(value_node, new_participant_data, batches)
+    elif type(decision_tree_node) == ValueNode:
+        print('got to value')
+        traverse_and_split(decision_tree_node.split_attribute, participant_data, batches)
+
+
+
 dtree_var = get_decision_tree_variables('./data_files/mod_cleaned_data.csv')
+decision_tree_root = construct_tree(dtree_var, [])
+split_data = []
+
+df = pd.read_csv('./data_files/mod_cleaned_data.csv', index_col=0)
+traverse_and_split(decision_tree_root, df, split_data)
+print(split_data)
 # print(dtree_var)
 
 '''
@@ -164,4 +192,4 @@ print(x_entropy)
 '''
 
 # print(calculate_information_gain(dtree_var, 'referrer'))
-print(construct_tree(dtree_var, []))
+# print(construct_tree(dtree_var, []))

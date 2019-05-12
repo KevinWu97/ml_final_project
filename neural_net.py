@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 class Network:
     # dont use political id, it's the y value
@@ -14,19 +15,19 @@ class Network:
         self.weights = [np.random.randn(y, x)
                         for x, y in zip(sizes[:-1], sizes[1:])]
 
-    def sigmoid(z):
+    def sigmoid(self, z):
         # np.exp calculates e^-z for each value in the list passed in
         return 1.0 / (1.0 + np.exp(-z))
 
     # derivative of sigmoid function
-    def sigmoid_prime(z):
-        return sigmoid(z) * (1 - sigmoid(z))
+    def sigmoid_prime(self, z):
+        return self.sigmoid(z) * (1 - self.sigmoid(z))
 
     #input passed in should be of size 78x1
     def getoutput(self, input):
         output = 0
         for b, w in zip(self.biases, self.weights):
-            output = sigmoid(np.dot(w, input) + b)
+            output = self.sigmoid(np.dot(w, input) + b)
         return output
 
     # training_data is an array of tuples (x, y) <- note, need to prune the x variables from the candidates first (x is a vector, y is a value)
@@ -39,18 +40,23 @@ class Network:
         n = len(training_data)
         for j in range(0, epochs):
             # replacing the shuffling and mini batches with using the decision tree to get the mini batches
+            '''
             random.shuffle(training_data)
             batches = [
                 training_data[k:k + batch_size]
                 for k in range(0, n, batch_size)
             ]
+            '''
+            # use decision tree to split the data
+            batches = []
             for batch in batches:
                 self.update_mini_batch(batch, learning_rate)
+            '''
             if test_data:
-                print "Epoch {0}: {1} / {2}".format(
-                    j, self.evaluate(test_data), n_test)
+                # print "Epoch {0}: {1} / {2}".format(j, self.evaluate(test_data), n_test)
             else:
-                print "Epoch {0} complete".format(j)
+                # print "Epoch {0} complete".format(j)
+            '''
 
     def update_mini_batch(self, batch, learning_rate):
         nabla_b = [np.zeros(b.shape) for b in self.biases]
@@ -59,9 +65,9 @@ class Network:
             delta_nabla_b, delta_nabla_w = self.backprop(x.transpose(), y)
             nabla_b = [nb + dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        self.weights = [w - (learning_rate / len(mini_batch)) * nw
+        self.weights = [w - (learning_rate / len(batch)) * nw
                         for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b - (learning_rate / len(mini_batch)) * nb
+        self.biases = [b - (learning_rate / len(batch)) * nb
                        for b, nb in zip(self.biases, nabla_b)]
 
     # make sure to transpose the x vector
@@ -80,25 +86,27 @@ class Network:
             o = np.dot(w, activation) + b.transpose()
             o = o.transpose()
             outputs.append(o)
-            activation = sigmoid(o)
+            activation = self.sigmoid(o)
             activations.append(activation)
         # backward pass
-        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(outputs[-1])
+        delta = self.cost_derivative(activations[-1], y) * self.sigmoid_prime(outputs[-1])
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
 
         for l in range(2, self.num_layers):
-            o = output[-l]
-            sp = sigmoid_prime(o)
+            o = outputs[-l]
+            sp = self.sigmoid_prime(o)
             delta = np.dot(self.weights[-l + 1].transpose(), delta) * sp
             nabla_b[-l] = delta
             nabla_w[-l] = np.dot(delta, activations[-l - 1].transpose())
-        return (nabla_b, nabla_w)
+        return nabla_b, nabla_w
 
+    '''
     def evaluate(self, test_data):
         test_results = [(np.argmax(self.feedforward(x)), y)
                         for (x, y) in test_data]
         return sum(int(x == y) for (x, y) in test_results)
+    '''
 
     def cost_derivative(self, output_activations, y):
-        return (output_activations - y)
+        return output_activations - y
