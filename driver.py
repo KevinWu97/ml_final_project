@@ -12,7 +12,7 @@ decision_tree_root = decision_tree.construct_tree(dtree_var, [])
 
 df = pd.read_csv('./data_files/mod_cleaned_data.csv', index_col=0)
 network = neural_net.Network([77, 24, 7, 1])
-network.gradient_descent(df, 500, decision_tree_root, 1)
+network.gradient_descent(df, 250, decision_tree_root, 1)
 
 df_sample = df.sample(n=100)
 y_values = np.array(df_sample[['politicalid']].copy().values.astype(np.float).tolist())
