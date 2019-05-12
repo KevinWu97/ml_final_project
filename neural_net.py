@@ -1,5 +1,7 @@
 import numpy as np
 import random
+import decision_tree
+import pandas as pd
 
 class Network:
     # dont use political id, it's the y value
@@ -33,7 +35,7 @@ class Network:
     # training_data is an array of tuples (x, y) <- note, need to prune the x variables from the candidates first (x is a vector, y is a value)
     # epochs = how many rounds do we train for, good number is 1000
     # mini_batch_size = we pick out only a certain amount of data from the set to train on
-    def gradient_descent(self, training_data, epochs, batch_size, learning_rate,
+    def gradient_descent(self, training_data, epochs, dtree_var, learning_rate,
             test_data=None):
         if test_data:
             n_test = len(test_data)
@@ -49,6 +51,10 @@ class Network:
             '''
             # use decision tree to split the data
             batches = []
+
+            decision_tree.traverse_and_split(dtree_var, training_data, batches)
+
+            # filter batches to get only columns with the relevant neural network variables (77)
             for batch in batches:
                 self.update_mini_batch(batch, learning_rate)
             '''
