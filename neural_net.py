@@ -43,7 +43,7 @@ class Network:
         # use decision tree to split the data
         batches = []
 
-        decision_tree.traverse_and_split(dtree_var, training_data, batches)
+        decision_tree.prune_decision_tree(dtree_var, training_data, batches)
 
         # filter batches to get only columns with the relevant neural network variables (77)
         # before calling the update step method
@@ -85,8 +85,8 @@ class Network:
 
             for batch in self.new_batches:
                 #print(list(batch))
-                #if count_iterable(batch) > 0:
-                self.update_mini_batch(batch, learning_rate)
+                if count_iterable(batch) > 0:
+                    self.update_mini_batch(batch, learning_rate)
             '''
             if test_data:
                 # print "Epoch {0}: {1} / {2}".format(j, self.evaluate(test_data), n_test)
@@ -156,6 +156,10 @@ class Network:
             nabla_w[-l] = np.dot(delta, activations[-l - 1].transpose())
         return nabla_b, nabla_w
 
+    def predict(self, input):
+        for b, w in zip(self.biases, self.weights):
+            input = self.sigmoid(np.dot(w, input) + b)
+        return input
     '''
     def evaluate(self, test_data):
         test_results = [(np.argmax(self.feedforward(x)), y)

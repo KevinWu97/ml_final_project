@@ -1,4 +1,5 @@
 import pandas as pd
+import random as rd
 import math
 
 
@@ -153,13 +154,13 @@ def construct_tree(data_set, already_split_variables):
 
 
 def traverse_and_split(decision_tree_node, participant_data, batches):
-    #print(type(decision_tree_node))
+    # print(type(decision_tree_node))
     if type(decision_tree_node) == list:
-        #print('got to end')
+        # print('got to end')
         batches.append(participant_data)
         return
     elif type(decision_tree_node) == AttributeNode:
-        #print('got to attribute')
+        # print('got to attribute')
         attribute_name = decision_tree_node.attribute_name
         attribute_values = decision_tree_node.attribute_values
         for value_node in attribute_values:
@@ -169,9 +170,57 @@ def traverse_and_split(decision_tree_node, participant_data, batches):
             new_participant_data = participant_data.loc[participant_data[attribute_name] == value_node.value]
             traverse_and_split(value_node, new_participant_data, batches)
     elif type(decision_tree_node) == ValueNode:
-        #print('got to value')
+        # print('got to value')
         traverse_and_split(decision_tree_node.split_attribute, participant_data, batches)
 
+
+def prune_decision_tree(decision_tree_node, participant_data, batches):
+    if type(decision_tree_node) == list:
+        # print('its a list')
+        batches.append(participant_data)
+        return
+    elif type(decision_tree_node) == AttributeNode:
+        # print(decision_tree_node.attribute_name)
+        attribute_name = decision_tree_node.attribute_name
+        attribute_values = decision_tree_node.attribute_values
+        data_partitions = []
+        for value_node in attribute_values:
+            # print(1)
+            new_participant_data = participant_data.loc[participant_data[attribute_name] == value_node.value]
+            data_partitions.append(new_participant_data)
+        # print(data_partitions)
+
+        small_partitions_index = []
+        if len(small_partitions_index) == len(data_partitions):
+            small_partitions_dataframes = [data_partitions[i] for i in small_partitions_index]
+            merged_dataframe = pd.concat(small_partitions_dataframes)
+            prune_decision_tree(decision_tree_node.attribute_values[0], merged_dataframe, batches)
+
+        for i in range(len(data_partitions)):
+            # print(2)
+            if data_partitions[i].shape[0] < 100:
+                small_partitions_index.append(i)
+
+        small_partitions_dataframes = [data_partitions[i] for i in small_partitions_index]
+        merged_dataframe = pd.concat(small_partitions_dataframes)
+
+        small_partitions_index = sorted(small_partitions_index, reverse=True)
+        for i in small_partitions_index:
+            # print(3)
+            del attribute_values[i]
+
+        # In each of the remaining partitions, add in data from the merged partitions at random
+        num_rows = merged_dataframe.shape[0]
+
+        for i in range(num_rows):
+            # print(6)
+            pd.concat([data_partitions[rd.randint(0, len(data_partitions) - 1)], merged_dataframe.iloc[i]])
+
+        for i in range(len(attribute_values)):
+            prune_decision_tree(attribute_values[i], data_partitions[i], batches)
+    elif type(decision_tree_node) == ValueNode:
+        # print('its a value node')
+        prune_decision_tree(decision_tree_node.split_attribute, participant_data, batches)
 
 
 dtree_var = get_decision_tree_variables('./data_files/mod_cleaned_data.csv')
@@ -179,7 +228,9 @@ decision_tree_root = construct_tree(dtree_var, [])
 split_data = []
 
 df = pd.read_csv('./data_files/mod_cleaned_data.csv', index_col=0)
-traverse_and_split(decision_tree_root, df, split_data)
+prune_decision_tree(decision_tree_root, df, split_data)
+# traverse_and_split(decision_tree_root, df, split_data)
+
 # print(split_data)
 for data in split_data:
     if data.shape[0] == 0:

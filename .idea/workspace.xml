@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b61b224b-47ac-4b99-8a07-fd2ef6f95dbd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Kevin_Wu.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clean_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/clean_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_files/mod_cleaned_data.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data_files/mod_cleaned_data.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/decision_tree.py" beforeDir="false" afterPath="$PROJECT_DIR$/decision_tree.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/driver.py" beforeDir="false" afterPath="$PROJECT_DIR$/driver.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/neural_net.py" beforeDir="false" afterPath="$PROJECT_DIR$/neural_net.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -33,8 +32,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/decision_tree.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-30">
-              <caret line="155" column="5" selection-start-line="155" selection-start-column="5" selection-end-line="155" selection-end-column="5" />
+            <state relative-caret-position="176">
+              <caret line="233" column="2" selection-start-line="233" selection-start-column="2" selection-end-line="233" selection-end-column="2" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -45,8 +44,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/neural_net.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="256">
-              <caret line="106" column="9" selection-start-line="106" selection-start-column="9" selection-end-line="106" selection-end-column="9" />
+            <state relative-caret-position="301">
+              <caret line="88" column="20" selection-start-line="88" selection-start-column="20" selection-end-line="88" selection-end-column="20" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -74,8 +73,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/driver.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
+            <state relative-caret-position="156">
+              <caret line="14" column="55" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -121,6 +120,7 @@
       <find>reciproc</find>
       <find>scales</find>
       <find>two and a half to</find>
+      <find>traverse</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -132,9 +132,9 @@
         <option value="$PROJECT_DIR$/convert_data.py" />
         <option value="$PROJECT_DIR$/participant.py" />
         <option value="$PROJECT_DIR$/clean_data.py" />
-        <option value="$PROJECT_DIR$/decision_tree.py" />
         <option value="$PROJECT_DIR$/test.py" />
         <option value="$PROJECT_DIR$/neural_net.py" />
+        <option value="$PROJECT_DIR$/decision_tree.py" />
         <option value="$PROJECT_DIR$/driver.py" />
       </list>
     </option>
@@ -299,8 +299,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.driver" />
-        <item itemvalue="Python.test" />
         <item itemvalue="Python.decision_tree" />
+        <item itemvalue="Python.test" />
         <item itemvalue="Python.clean_data" />
         <item itemvalue="Python.neural_net" />
       </list>
@@ -321,7 +321,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17118308" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -399,6 +398,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/convert_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="22" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/clean_data.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="11526">
@@ -409,37 +415,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/convert_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="22" selection-start-line="6" selection-start-column="22" selection-end-line="6" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/neural_net.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="106" column="9" selection-start-line="106" selection-start-column="9" selection-end-line="106" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/decision_tree.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-30">
-          <caret line="155" column="5" selection-start-line="155" selection-start-column="5" selection-end-line="155" selection-end-column="5" />
+        <state relative-caret-position="176">
+          <caret line="233" column="2" selection-start-line="233" selection-start-column="2" selection-end-line="233" selection-end-column="2" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/neural_net.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="88" column="20" selection-start-line="88" selection-start-column="20" selection-end-line="88" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/driver.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
+        <state relative-caret-position="156">
+          <caret line="14" column="55" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
