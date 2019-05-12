@@ -58,6 +58,8 @@ batch = df[['age', 'sex', 'anchoring1', 'anchoring2', 'anchoring3', 'anchoring4'
                'noflagtimeestimate3', 'noflagtimeestimate4', 'omdimc3', 'quotea', 'quoteb', \
                'scalesa', 'scalesb', 'sunkcosta', 'sunkcostb', 'sysjust1', 'sysjust2', 'sysjust3',
                'sysjust4', 'sysjust5', 'sysjust6', 'sysjust7', 'sysjust8']].copy()
+batch = np.array(batch.values.astype(np.float).tolist())
+
 values = []
 for x, y in zip(batch, y_values):
     prediction = network.predict(np.array([[x_val] for x_val in x]))
