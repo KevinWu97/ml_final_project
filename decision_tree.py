@@ -153,13 +153,13 @@ def construct_tree(data_set, already_split_variables):
 
 
 def traverse_and_split(decision_tree_node, participant_data, batches):
-    print(type(decision_tree_node))
+    #print(type(decision_tree_node))
     if type(decision_tree_node) == list:
-        print('got to end')
+        #print('got to end')
         batches.append(participant_data)
         return
     elif type(decision_tree_node) == AttributeNode:
-        print('got to attribute')
+        #print('got to attribute')
         attribute_name = decision_tree_node.attribute_name
         attribute_values = decision_tree_node.attribute_values
         for value_node in attribute_values:
@@ -169,7 +169,7 @@ def traverse_and_split(decision_tree_node, participant_data, batches):
             new_participant_data = participant_data.loc[participant_data[attribute_name] == value_node.value]
             traverse_and_split(value_node, new_participant_data, batches)
     elif type(decision_tree_node) == ValueNode:
-        print('got to value')
+        #print('got to value')
         traverse_and_split(decision_tree_node.split_attribute, participant_data, batches)
 
 
@@ -180,13 +180,15 @@ split_data = []
 
 df = pd.read_csv('./data_files/mod_cleaned_data.csv', index_col=0)
 traverse_and_split(decision_tree_root, df, split_data)
-print(split_data)
+# print(split_data)
+for data in split_data:
+    if data.shape[0] == 0:
+        print('you fucked up')
 # print(dtree_var)
 
 '''
 y_entropy = calculate_y_entropy(dtree_var)
 print(y_entropy)
-
 x_entropy = calculate_x_entropy(dtree_var, 'referrer')
 print(x_entropy)
 '''

@@ -1,7 +1,12 @@
 import pandas as pd
+import numpy as np
 import scipy as sc
 
-
+a = np.array([[2,1],[1,2]])
+b = np.array([[1],[2]])
+c = np.array([[1],[2]])
+print(np.dot(a,b) +c )
+print(list(zip(a,b)))
 def independence_reciprocity_ordering():
     df = pd.read_csv('./data_files/cleaned_data.csv')
     tempdf = df[df.columns[147:151]]

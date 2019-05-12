@@ -40,6 +40,39 @@ class Network:
         if test_data:
             n_test = len(test_data)
         n = len(training_data)
+        # use decision tree to split the data
+        batches = []
+
+        decision_tree.traverse_and_split(dtree_var, training_data, batches)
+
+        # filter batches to get only columns with the relevant neural network variables (77)
+        # before calling the update step method
+        self.new_batches = []
+        for batch in batches:
+            y_values = np.array(batch[['politicalid']].copy().values.astype(np.float).tolist())
+            batch = batch[['age', 'sex', 'anchoring1', 'anchoring2', 'anchoring3', 'anchoring4', 'reciprocityus',
+                           'reciprocityother', 'allowedforbidden', 'quote', 'totalflagestimations',
+                           'totalnoflagtimeestimations', 'IATexpart', \
+                           'IATexpmath', 'IATexp.overall', 'totexpmissed', 'artwarm', 'diseaseframinga',
+                           'diseaseframingb', 'flagdv1', 'flagdv2', 'flagdv3', 'flagdv4', 'flagdv5', 'flagdv6',
+                           'flagdv7', \
+                           'flagdv8', 'flagsupplement1', 'flagsupplement2', 'flagsupplement3', 'flagtimeestimate1',
+                           'flagtimeestimate2', 'flagtimeestimate3', 'flagtimeestimate4', 'gamblerfallacya', \
+                           'gamblerfallacyb', 'iatexplicitart1', 'iatexplicitart2', 'iatexplicitart3',
+                           'iatexplicitart4', 'iatexplicitart5', 'iatexplicitart6', 'iatexplicitmath1',
+                           'iatexplicitmath2', \
+                           'iatexplicitmath3', 'iatexplicitmath4', 'iatexplicitmath5', 'iatexplicitmath6',
+                           'imaginedexplicit1', 'imaginedexplicit2', 'imaginedexplicit3', 'imaginedexplicit4', 'major',
+                           'mathwarm', 'moneyagea', \
+                           'moneyageb', 'moneygendera', 'moneygenderb', 'noflagtimeestimate1', 'noflagtimeestimate2',
+                           'noflagtimeestimate3', 'noflagtimeestimate4', 'omdimc3', 'quotea', 'quoteb', \
+                           'scalesa', 'scalesb', 'sunkcosta', 'sunkcostb', 'sysjust1', 'sysjust2', 'sysjust3',
+                           'sysjust4', 'sysjust5', 'sysjust6', 'sysjust7', 'sysjust8']].copy()
+            batch = np.array(batch.values.astype(np.float).tolist())
+            batch = list(zip(batch, y_values))
+            #print(batch)
+            self.new_batches.append(batch)
+
         for j in range(0, epochs):
             # replacing the shuffling and mini batches with using the decision tree to get the mini batches
             '''
@@ -49,22 +82,10 @@ class Network:
                 for k in range(0, n, batch_size)
             ]
             '''
-            # use decision tree to split the data
-            batches = []
 
-            decision_tree.traverse_and_split(dtree_var, training_data, batches)
-
-            # filter batches to get only columns with the relevant neural network variables (77)
-            # before calling the update step method
-            for batch in batches:
-                batch = batch[['age','gender','anchoranswer1','anchoranswer2','anchoranswer3','anchoranswer4','reciprocityus','reciprocityother','allowedforbidden','quote','totalflagtimeestimations','totalnoflagtimeestimations','iatexpert',
-                              'iatexpmath','iatexpall','totalexpmissed','artwarm','diseaseframinga','diseaseframingb','flagdv1','flagdv2','flagdv3','flagdv4','flagdv5','flagdv6','flagdv7',
-                              'flagdv8','flagsupplement1','flagsupplement2','flagsupplement3','flagtimeestimate1','flagtimeestimate2','flagtimeestimate3','flagtimeestimate4', 'gamblerfallacya',
-                              'gamblerfallacyb','iatexplicitart1','iatexplicitart2','iatexplicitart3','iatexplicitart4','iatexplicitart5','iatexplicitart6','iatexplicitmath1','iatexplicitmath2',
-                              'iatexplicitmath3','iatexplicitmath4','iatexplicitmath5','iatexplicitmath6','imaginedexplicit1','imaginedexplicit2','imaginedexplicit3','imaginedexplicit4','major','mathwarm','moneyagea',
-                              'moneyageb','moneygendera','moneygenderb','noflagtimeestimate1','noflagtimeestimate2','noflagtimeestimate3','noflagtimeestimate4','omdimc3','quotea','quoteb',
-                              'scalesa','scalesb','sunkcosta','sunkcostb','sysjust1','sysjust2','sysjust3','sysjust4','sysjust5','sysjust6','sysjust7','sysjust8']].copy()
-                batch = batch.values.tolist()
+            for batch in self.new_batches:
+                #print(list(batch))
+                #if count_iterable(batch) > 0:
                 self.update_mini_batch(batch, learning_rate)
             '''
             if test_data:
@@ -76,13 +97,18 @@ class Network:
     def update_mini_batch(self, batch, learning_rate):
         nabla_b = [np.zeros(b.shape) for b in self.biases]
         nabla_w = [np.zeros(w.shape) for w in self.weights]
+
+        original_len = count_iterable(batch)
+
         for x, y in batch:
-            delta_nabla_b, delta_nabla_w = self.backprop(x.transpose(), y)
+            delta_nabla_b, delta_nabla_w = self.backprop(np.array([[x_val] for x_val in x]), y)
             nabla_b = [nb + dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw + dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        self.weights = [w - (learning_rate / len(batch)) * nw
+        #print("**********************SIZE OF BATCH****************************")
+        #print(original_len)
+        self.weights = [w - (learning_rate / original_len) * nw
                         for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b - (learning_rate / len(batch)) * nb
+        self.biases = [b - (learning_rate / original_len) * nb
                        for b, nb in zip(self.biases, nabla_b)]
 
     # make sure to transpose the x vector
@@ -98,10 +124,24 @@ class Network:
             # so that row of weights corresponds with the neuron in that next layer
             # for some reason np.dot also transposes, so when you add b, you're adding
             # a bias for each neuron?
-            o = np.dot(w, activation) + b.transpose()
-            o = o.transpose()
+            #w = map(float, w)
+            #b = map(float, b)
+            #activation = map(float, activation)
+            '''
+            print(w.shape)
+            print(b.shape)
+            print(activation.shape)
+            print('o')
+            '''
+            o = np.dot(w, activation) + b
+            #o = o.transpose()
+            '''
+            print(o.shape)
+            print('activation')
+            '''
             outputs.append(o)
             activation = self.sigmoid(o)
+            #print(activation)
             activations.append(activation)
         # backward pass
         delta = self.cost_derivative(activations[-1], y) * self.sigmoid_prime(outputs[-1])
@@ -125,3 +165,5 @@ class Network:
 
     def cost_derivative(self, output_activations, y):
         return output_activations - y
+def count_iterable(i):
+    return sum(1 for e in i)

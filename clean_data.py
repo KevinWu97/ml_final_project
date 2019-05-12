@@ -712,7 +712,7 @@ def transform_data(file_path):
             scales_b[i] = random.uniform(0, 1)
         elif scales_b[i] == 'Up to two and a half hours':
             scales_b[i] = 0
-        elif scales_b[i] == 'Two and a half hours to three hours':
+        elif scales_b[i] == 'Two and a half to three hours':
             scales_b[i] = float(1) / 5
         elif scales_b[i] == 'Three to three and a half hours':
             scales_b[i] = float(2) / 5
